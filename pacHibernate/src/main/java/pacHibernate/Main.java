@@ -34,6 +34,7 @@ public class Main {
 		Transaction tx;
 		List<Libro> libros;
 		List<Lector> lectores;
+		List<Prestamo> prestamos;
 		
         do{
         	
@@ -46,7 +47,10 @@ public class Main {
             System.out.println("5: Ver Libro por ID");
             System.out.println("6: Ver Lector por ID");
             System.out.println("7: Registrar un prestamo");
-            System.out.println("8: Salir");
+            System.out.println("8: Libros prestados a un lector");
+            System.out.println("9: Libros disponibles");
+            //System.out.println("10: Historial de prestamos por lector");
+            System.out.println("0: Salir");
             System.out.println("---------------------------");
             
             System.out.printf("\nSeleccione una opcion: ");
@@ -54,7 +58,7 @@ public class Main {
 
             //sc.nextLine();
             numeroMenu = sc.nextInt();
-            while(numeroMenu < 1 || numeroMenu > 8){
+            while(numeroMenu < 0 || numeroMenu > 8){
                 System.out.println("Opcion Incorrecta\n Repite: ");
                 numeroMenu = sc.nextInt();
                 
@@ -158,9 +162,17 @@ public class Main {
                 	prestamo.setLibro(libros.get(lib));
                 	
                 	
+                	//Si el libro no esta disponble pues tira atras. No necesita rollback porque no se ha confirmado nada.
+                	if(libros.get(lib).isDisponible() == false) {
+                		System.out.println("Este libro no esta disponible");
+                		break;
+                	}
+                	//Indicamos que ese libro ya no esta disponible
+                	libros.get(lib).setDisponible(false);
+                	
                 	
                 	System.out.println("Indica el ID del Lector: ");
-                	int lec = sc.nextInt();
+                	int lec = sc.nextInt() - 1;
                 	lectores = session.createQuery("FROM Lector", Lector.class).getResultList();
                 	prestamo.setLector(lectores.get(lec));
                 	
@@ -170,22 +182,51 @@ public class Main {
                 	tx.commit();
                 	System.out.println("PRESTAMO CREADO");
                 	
+
+                	break;
                 	
+                
+                	
+                case 8:
+                	
+                	libros = session.createQuery("FROM Libro WHERE disponible = false", Libro.class).getResultList();
+            		System.out.println("LIBROS PRESTADOS:");
+
+            		for (Libro libr : libros) {
+            		    List<Integer> lectorIds = session.createQuery("SELECT p.lector.idLector FROM Prestamo p WHERE p.libro.idLibro = :libroId", Integer.class)
+            		                                      .setParameter("libroId", libr.getIdLibro())
+            		                                      .getResultList();
+            		    System.out.println("Para el libro " + libr.getIdLibro() + ", los lectores son:");
+            		    for (Integer lectorId : lectorIds) {
+            		        System.out.println("Lector ID: " + lectorId);
+            		    }
+            		}
+
                 	
                 	break;
-                case 8:
+                case 9:
+                	
+                	libros = session.createQuery("FROM Libro WHERE disponible = true", Libro.class).getResultList();
+            		System.out.println("LIBROS DISPONIBLES:");
+
+                	for(Libro a : libros) {
+                		System.out.println(a.toString());
+                	}
+                	
+                	break;
+                case 0:
                     System.out.printf("Gracias por usar este programa\n");
                     //sc.close();
                     break;
 
-                case 0:
+                
 
                 default:
                     System.out.printf("No hay tantas opciones en el menu\n");
                     break;
             }
             
-        }while(numeroMenu != 8);
+        }while(numeroMenu != 0);
         
         sc.close();
 		
