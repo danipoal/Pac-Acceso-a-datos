@@ -6,8 +6,8 @@
 <hibernate-configuration>
 	<session-factory>
 		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
-		<property name="hibernate.hbm2ddL.auto">create</property>
-		<property name="connection.url">jdbc:mysql://localhost/Pac_Datos</property>
+		<property name="hibernate.hbm2ddl.auto">create</property>
+		<property name="connection.url">jdbc:mysql://localhost/pac_datos</property>
 		<property name="connection.username">root</property>
 		<property name="connection.password"></property>
 		

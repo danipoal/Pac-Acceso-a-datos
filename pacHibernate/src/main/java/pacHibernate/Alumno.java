@@ -10,6 +10,7 @@ public class Alumno {
 	private String nombre;
 	private int edad;
 	
+	
 	public Alumno(int idAlumno, String nombre, int edad) {
 		super();	
 		this.idAlumno = idAlumno;
