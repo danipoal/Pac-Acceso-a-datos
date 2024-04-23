@@ -13,6 +13,10 @@
 		
 		<!-- Insertar mapeos de las clases -->
 		<mapping resource="alumno.hbm.xml"/>
+		<mapping resource="libro.hbm.xml"/>
+		<mapping resource="lector.hbm.xml"/>
+		<mapping resource="prestamo.hbm.xml"/>
+		
 	</session-factory>
 
 	
