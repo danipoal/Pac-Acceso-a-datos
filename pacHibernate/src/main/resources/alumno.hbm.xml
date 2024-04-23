@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="pacHibernate.Alumno" table="Alumnos" catalog=""> <!-- Hay que definir en name el paquete si no no funciona -->
+		<id name="idAlumno">
+			<column name="alumno_id"/> <!-- Agregar comillas dobles alrededor de alumno_id -->
+			<generator class="increment"/>
+		</id>
+		<property name="nombre"/>
+		<property name="edad" type="integer"/>
+	</class>
+</hibernate-mapping>
